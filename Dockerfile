@@ -33,10 +33,4 @@ ln -s "${NODE_HOME}/node-${NODE_VERSION}-linux-x64/bin/ui5" /usr/local/bin/ui5 &
 # smoke tests
 node --version && \
 npm --version
-# Install certs. However instead of using COPY instruction. it is possible to provide path via docker volume
-# RUN echo "[INFO] Install certificates in the JRA truststore." && \
-#    keytool -import -trustcacerts -noprompt -keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts -storepass changeit -alias "${HOST_CERT%.*}" -file "${CM_USER_HOME}/${HOST_CERT}" && \
-#    keytool -import -trustcacerts -noprompt -keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts -storepass changeit -alias "${INTER_CERT%.*}" -file "${CM_USER_HOME}/${INTER_CERT}" && \
-#    keytool -import -trustcacerts -noprompt -keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts -storepass changeit -alias "${ROOT_CERT%.*}" -file "${CM_USER_HOME}/${ROOT_CERT}"  && \
-#    keytool -import -trustcacerts -noprompt -keystore /usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts -storepass changeit -alias "${SELF_CERT%.*}" -file "${CM_USER_HOME}/${SELF_CERT}"
 WORKDIR /usr/node/home
