@@ -1,18 +1,24 @@
-# Build Arguments
+FROM debian:stable-slim
+
+# Build Arguments (keep in mind that only 2.0.1 is working with Solution Manager)
 ARG NODE_VERSION=v12.16.1
 ARG NPM_CONFIG_LOGLEVEL=info
-#ARG JAVA_KEYSTORE=cacerts
-#ARG JAVA_KEYSTORE_PWD=changeit
-#ARG ROOT_CERT="root.cer"
-#ARG INTER_CERT="inter.cer"
-#ARG HOST_CERT="srv.cer"
-#ARG SELF_CERT="sm2.cer"
+ARG JAVA_KEYSTORE=cacerts
+ARG JAVA_KEYSTORE_PWD=changeit
+ARG ROOT_CERT="root.cer"
+ARG INTER_CERT="inter.cer"
+ARG HOST_CERT="srv.cer"
+ARG SELF_CERT="sm2.cer"
 ARG NODE_HOME="/opt/nodejs"
 ARG DEBIAN_FRONTEND=noninteractive
+
 ENV NODE_PATH="${NODE_HOME}/node-${NODE_VERSION}-linux-x64/lib/node_modules"
 # Update repo and install some tools
 RUN apt-get update && apt-get install -y --no-install-recommends git wget ca-certificates && \
     rm -rf /var/lib/apt/lists/*
+# Copy certs chain. Can be commented, and than volume attached to this path
+# COPY /certs "/home/node"
+
 # Handle user permissions
 RUN groupadd --system node && \
 useradd --system --create-home --gid node --groups audio,video node && \
