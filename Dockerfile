@@ -14,11 +14,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ENV NODE_PATH="${NODE_HOME}/node-${NODE_VERSION}-linux-x64/lib/node_modules"
 # Update repo and install some tools
-RUN apt-get update && apt-get install -y --no-install-recommends git wget ca-certificates && \
+RUN apt-get update && apt-get install -y --no-install-recommends git wget jq ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 # Copy certs chain. Can be commented, and than volume attached to this path
 # COPY /certs "/home/node"
-
+# Install yq processing tool
+RUN curl -LJO https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 && \
+    chmod a+rx yq_linux_amd64 && \
+    mv yq_linux_amd64 /opt/yq
 # Handle user permissions
 RUN groupadd --system node && \
 useradd --system --create-home --gid node --groups audio,video node && \
