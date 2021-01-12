@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends git wget jq ca-
 # Install yq processing tool
 RUN curl -LJO https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 && \
     chmod a+rx yq_linux_amd64 && \
-    mv yq_linux_amd64 /opt/yq
+    mv yq_linux_amd64 /opt/yq && \
+    ln -sf /opt/yq /bin/yq
 # Handle user permissions
 RUN groupadd --system node && \
 useradd --system --create-home --gid node --groups audio,video node && \
