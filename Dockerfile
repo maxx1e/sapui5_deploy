@@ -15,12 +15,20 @@ ENV CM_USER_HOME=/home/cmtool
 ENV CMCLIENT_OPTS="-Djavax.net.ssl.trustStore=/usr/lib/jvm/java-11-openjdk-amd64/lib/security/cacerts"
 ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 ARG DEBIAN_FRONTEND=noninteractive
+
 ENV NODE_PATH="${NODE_HOME}/node-${NODE_VERSION}-linux-x64/lib/node_modules"
 # Image issue while JRE installation (https://github.com/debuerreotype/docker-debian-artifacts/issues/24)
 RUN mkdir -p /usr/share/man/man1
 # Update repo and install some tools
 RUN apt-get update && apt-get install -y --no-install-recommends git wget ca-certificates curl openjdk-11-jre-headless && \
     rm -rf /var/lib/apt/lists/*
+# Copy certs chain. Can be commented, and than volume attached to this path
+# COPY /certs "/home/node"
+# Install yq processing tool
+RUN curl -LJO https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 && \
+    chmod a+rx yq_linux_amd64 && \
+    mv yq_linux_amd64 /opt/yq && \
+    ln -sf /opt/yq /bin/yq
 # Handle user permissions
 RUN groupadd --system node && \
 useradd --system --create-home --gid node --groups audio,video node && \
